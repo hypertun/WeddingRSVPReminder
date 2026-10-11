@@ -1,0 +1,14 @@
+# Secrets / credentials
+.env
+
+# Python
+venv/
+__pycache__/
+*.pyc
+
+# OS
+.DS_Store
+
+# Guest data (names, phone numbers) — keep private
+*.csv
+*.xlsx
