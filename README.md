@@ -39,7 +39,7 @@ Files created **outside** the repo on first run:
 | `~/.whatsapp_playwright_profile/` | Persistent Chromium profile (keeps you logged into WhatsApp Web) |
 | `~/.telegram_session` (+ `.session`) | Telethon session — avoids re-login on subsequent runs |
 
-> ⚠️ **Default paths:** the script's built-in defaults for the CSV and log point to `~/Downloads/`. When running from this repo, always pass `--csv` and `--log-file` explicitly (see examples below).
+> ✅ **Default paths:** the CSV and log default to files **inside this repo** (resolved relative to the script, so it works from any working directory). Override with `--csv` / `--log-file` if your guest list lives elsewhere.
 
 ---
 
@@ -121,35 +121,38 @@ Phone numbers are normalized automatically:
 Use `./run_rsvp.sh` (runs inside `venv/`) or `python3 send_rsvp_messages.py` directly.
 
 ```bash
-# ALWAYS pass --csv when running from this repo (defaults point to ~/Downloads)
+# Defaults work out of the box — just drop your guest list in the repo folder
 CSV="INF-INITY & FOREVER RSVP (Responses) - Messsage List.csv"
 
 # 1. Dry run — preview the full dispatch plan, sends nothing
-./run_rsvp.sh --csv "$CSV" --dry-run
+./run_rsvp.sh --dry-run
 
 # 2. Test a single party (case-insensitive substring match on Party Name)
-./run_rsvp.sh --csv "$CSV" --party "Agnes Yeo"
+./run_rsvp.sh --party "Agnes Yeo"
 
 # 3. Send to the first 3 parties only
-./run_rsvp.sh --csv "$CSV" --limit 3
+./run_rsvp.sh --limit 3
 
 # 4. Full dispatch with auto-resume
 #    (skips any Party+Channel already logged SUCCESS in rsvp_send_log.csv)
-./run_rsvp.sh --csv "$CSV" --resume
+./run_rsvp.sh --resume
 
 # 5. Start from row 10, Telegram only, 10s delay
-./run_rsvp.sh --csv "$CSV" --start 10 --channels telegram --delay 10
+./run_rsvp.sh --start 10 --channels telegram --delay 10
 
 # 6. Playwright method (scans QR code on first run)
-./run_rsvp.sh --csv "$CSV" --whatsapp-method playwright
+./run_rsvp.sh --whatsapp-method playwright
+
+# 7. Custom file locations
+./run_rsvp.sh --csv "/path/to/other/list.csv" --log-file "/path/to/log.csv"
 ```
 
 ### All CLI flags
 
 | Flag | Description | Default |
 |---|---|---|
-| `--csv PATH` | Path to the message-list CSV | `~/Downloads/...Messsage List.csv` |
-| `--log-file PATH` | Path to the send log CSV | `~/Downloads/rsvp_send_log.csv` |
+| `--csv PATH` | Path to the message-list CSV | `<repo>/...Messsage List.csv` |
+| `--log-file PATH` | Path to the send log CSV | `<repo>/rsvp_send_log.csv` |
 | `--dry-run` | Preview only — no messages sent, nothing logged | off |
 | `--channels LIST` | Comma-separated: `whatsapp`, `telegram` | from `.env` |
 | `--party NAME` | Filter parties (case-insensitive substring); also usable as a positional arg | all |

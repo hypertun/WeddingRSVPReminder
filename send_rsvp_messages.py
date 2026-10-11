@@ -47,9 +47,9 @@ try:
 except ImportError:
     pass
 
-# Paths
-DEFAULT_CSV_PATH = Path("/Users/ivan/Downloads/INF-INITY & FOREVER RSVP (Responses) - Messsage List.csv")
-DEFAULT_LOG_PATH = Path("/Users/ivan/Downloads/rsvp_send_log.csv")
+# Paths (relative to this script's directory, so it works regardless of cwd)
+DEFAULT_CSV_PATH = script_dir / "INF-INITY & FOREVER RSVP (Responses) - Messsage List.csv"
+DEFAULT_LOG_PATH = script_dir / "rsvp_send_log.csv"
 
 
 def clean_phone_number(raw_phone: str) -> str:
